@@ -1,5 +1,8 @@
 # GPT Model Training from Scratch
 
+#### link to download the weights : <a>https://drive.google.com/file/d/1F6oTz8Q9nPl9Vs67u9nYi1CRVeUGLV2s/view?usp=sharing</a>
+
+
 A PyTorch implementation of a GPT (Generative Pre-trained Transformer) model trained from scratch using the TinyStories dataset. This project demonstrates how to build, train, and generate text with a transformer-based language model.
 
 ## Features
