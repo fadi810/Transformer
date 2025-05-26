@@ -35,7 +35,7 @@ pip install torch tiktoken datasets matplotlib pandas
    ```
 
 2. **Run the Jupyter notebook**
-    run all the cells except the __main__ for training
+    run all the cells except the \__main__ for training
 
     
 
