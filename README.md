@@ -60,7 +60,26 @@ GPT_CONFIG_124M = {
     "qkv_bias": False       # Query-key-value bias
 }
 ```
+### Load Model and Generate Text
 
+```python
+import torch
+import tiktoken
+from model import GPTModel  # Make sure to import your GPTModel
+from utils import generate_and_print_sample  # Your text generation function
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+model = GPTModel(GPT_CONFIG_124M)
+model.load_state_dict(torch.load('/content/drive/MyDrive/model_weights.pth', weights_only=True, map_location='cpu'))
+model.to(device)
+
+tokenizer = tiktoken.get_encoding("gpt2")
+prompt = "Lily went out"
+text = generate_and_print_sample(model, tokenizer, device, prompt)
+
+print(len(text))
+```
 **Key Parameters to Modify:**
 - `context_length`: Increase for longer context (more memory usage)
 - `emb_dim`: Model size - larger = more capacity but slower training
@@ -110,17 +129,6 @@ with open('your_text_file.txt', 'r', encoding='utf-8') as f:
 df = [text_data]
 ```
 
-#### Option 2: Multiple Text Files
-```python
-import glob
-
-text_files = glob.glob('path/to/your/texts/*.txt')
-df = []
-for file in text_files:
-    with open(file, 'r', encoding='utf-8') as f:
-        df.append(f.read())
-```
-
 #### Option 3: HuggingFace Dataset
 ```python
 # For other HuggingFace datasets:
@@ -165,19 +173,6 @@ GPT_CONFIG_SMALL = {
 }
 ```
 
-**Large Model (Better Performance):**
-```python
-GPT_CONFIG_LARGE = {
-    "vocab_size": 50257,
-    "context_length": 512,   # Longer context
-    "emb_dim": 1024,         # Larger embedding
-    "n_heads": 16,           # More heads
-    "n_layers": 24,          # More layers
-    "drop_rate": 0.1,
-    "qkv_bias": False
-}
-```
-
 ### Text Generation
 
 After training, generate text samples:
@@ -201,15 +196,6 @@ generate_and_print_sample(model, tokenizer, device, "Your prompt here")
 4. **GPU Memory**: Reduce batch_size if you encounter out-of-memory errors
 5. **Checkpointing**: Save model checkpoints during long training runs
 
-## File Structure
-
-```
-├── Trained.ipynb          # Main training notebook
-├── model.pth             # Saved model weights (after training)
-├── loss.pdf              # Training loss plot (generated)
-└── README.md             # This file
-```
-
 ## Troubleshooting
 
 ### Common Issues
@@ -230,25 +216,12 @@ generate_and_print_sample(model, tokenizer, device, "Your prompt here")
 - Use larger/better dataset
 - Adjust learning rate
 
-### Hardware Requirements
 
-- **Minimum**: 8GB RAM, any GPU with 4GB+ VRAM
-- **Recommended**: 16GB+ RAM, GPU with 8GB+ VRAM
-- **Training Time**: 
-  - Small model: ~30 minutes on modern GPU
-  - Default model: 1-3 hours on modern GPU
-  - Large model: 4+ hours on modern GPU
 
-## Contributing
 
-Feel free to submit issues and enhancement requests!
-
-## License
-
-This project is open source and available under the MIT License.
 
 ## Acknowledgments
 
-- Based on the GPT architecture from "Attention Is All You Need"
+- Based on the GPT LLMs-From-Scratch
 - Uses TinyStories dataset for training
-- Inspired by Andrej Karpathy's educational materials
+
